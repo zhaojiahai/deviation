@@ -330,7 +330,7 @@ dollar = $$
 define define_compile_rules
 $(ODIR)/%.o: $(1)%.c
 	@echo " + Compiling '$$<'"
-	$(CC) $$(CFLAGS) -MD -c -o $$@ $$<
+	$(CC) $$(CFLAGS) -MD -Os -c -o $$@ $$<
 	@cp $(ODIR)/$$*.d $(ODIR)/$$*.P; \
             sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$(dollar)//' \
                 -e '/^$$(dollar)/ d' -e 's/$$(dollar)/ :/' < $(ODIR)/$$*.d >> $(ODIR)/$$*.P; \
@@ -338,7 +338,7 @@ $(ODIR)/%.o: $(1)%.c
 
 $(ODIR)/%.o: $(1)%.cpp
 	@echo " + Compiling '$$<'"
-	$(CXX) $$(CXXFLAGS) -MD -c -o $$@ $$<
+	$(CXX) $$(CXXFLAGS) -MD -Os -c -o $$@ $$<
 	@cp $(ODIR)/$$*.d $(ODIR)/$$*.P; \
             sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$(dollar)//' \
                 -e '/^$$(dollar)/ d' -e 's/$$(dollar)/ :/' < $(ODIR)/$$*.d >> $(ODIR)/$$*.P; \
@@ -347,7 +347,7 @@ $(ODIR)/%.o: $(1)%.cpp
 #For module building
 $(ODIR)/%.o_: $(1)%.c
 	@echo " + Compiling '$$<' as module"
-	$(CC) $$(CFLAGS) $$(MODULE_FLAGS) -MD -c -o $$@ $$<
+	$(CC) $$(CFLAGS) $$(MODULE_FLAGS) -MD -Os -c -o $$@ $$<
 	@cp $(ODIR)/$$*.d $(ODIR)/$$*.P; \
             sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$(dollar)//' \
                 -e '/^$$(dollar)/ d' -e 's/$$(dollar)/ :/' < $(ODIR)/$$*.d >> $(ODIR)/$$*.P; \

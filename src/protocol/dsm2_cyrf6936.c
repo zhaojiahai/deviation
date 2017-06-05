@@ -420,7 +420,7 @@ static u32 pkt32_to_coord(u8 *ptr)
 NO_INLINE static void parse_telemetry_packet()
 {
     static u8 altitude; // byte from first GPS packet
-#if HAS_EXTENDED_TELEMETRY
+/*#if HAS_EXTENDED_TELEMETRY
     static const u8 update0a[] = { TELEM_DSM_PBOX_VOLT1, TELEM_DSM_PBOX_VOLT2,
                                    TELEM_DSM_PBOX_CAPACITY1, TELEM_DSM_PBOX_CAPACITY2,
                                    TELEM_DSM_PBOX_ALARMV1, TELEM_DSM_PBOX_ALARMV2,
@@ -436,7 +436,7 @@ NO_INLINE static void parse_telemetry_packet()
                                    TELEM_DSM_ESC_OUTPUT, 0};
     static const u8 update18[] = { TELEM_DSM_RXPCAP_AMPS, TELEM_DSM_RXPCAP_CAPACITY, TELEM_DSM_RXPCAP_VOLT, 0};
     static const u8 update34[] = { TELEM_DSM_FPCAP_AMPS, TELEM_DSM_FPCAP_CAPACITY, TELEM_DSM_FPCAP_TEMP, 0};
-#endif
+#endif*/
     static const u8 update16[] = { TELEM_GPS_ALT, TELEM_GPS_LAT, TELEM_GPS_LONG, TELEM_GPS_HEADING, 0};
     static const u8 update17[] = { TELEM_GPS_SPEED, TELEM_GPS_TIME, TELEM_GPS_SATCOUNT, 0};
     static const u8 update7f[] = { TELEM_DSM_FLOG_FADESA, TELEM_DSM_FLOG_FADESB,
@@ -520,14 +520,14 @@ NO_INLINE static void parse_telemetry_packet()
         case 0x14: //G-Force sensor
             update = update14;
             break;
-#if HAS_EXTENDED_TELEMETRY
+/*#if HAS_EXTENDED_TELEMETRY
         case 0x18: //RX Pack Cap sensor (SPMA9604)
             update = update18;
             break;
         case 0x34: //Flight Pack Cap sensor (SPMA9605)
             update = update34;
             break;
-#endif
+#endif*/
         case 0x40: //Variometer sensor (SPMA9589)
             update = update40;
             break;
@@ -542,7 +542,7 @@ NO_INLINE static void parse_telemetry_packet()
         return;
     }
     switch(data_type) {
-#if HAS_EXTENDED_TELEMETRY
+/*#if HAS_EXTENDED_TELEMETRY
         case 0x0a: //Powerbox sensor
             update = update0a;
             Telemetry.value[TELEM_DSM_PBOX_VOLT1] = pktTelem[1]; //In 1/100 of Volts
@@ -576,7 +576,7 @@ NO_INLINE static void parse_telemetry_packet()
             Telemetry.value[TELEM_DSM_ESC_THROTTLE] = packet[14]* 5; //Throttle % in 0.5% (0-127%) (0xFF ----> No data)
             Telemetry.value[TELEM_DSM_ESC_OUTPUT] = end_byte * 5;    //Power Output % in 0.5% (0-127%) (0xFF ----> No data)
             break;
-#endif //HAS_EXTENDED_TELEMETRY
+#endif //HAS_EXTENDED_TELEMETRY*/
         case 0x7e: //TM1000
         case 0xfe: //TM1100
             update = update7e;

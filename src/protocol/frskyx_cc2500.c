@@ -374,7 +374,7 @@ static void frskyX_data_frame() {
 #define HUB_DATA_U16(packet)    (*((uint16_t *)(packet+4)))
 
 
-#if HAS_EXTENDED_TELEMETRY
+/*#if HAS_EXTENDED_TELEMETRY
 
 #include "frsky_d_telem._c"
 
@@ -587,7 +587,7 @@ static void frsky_parse_sport_stream(u8 data) {
     }
 }
 
-#endif // HAS_EXTENDED_TELEMETRY
+#endif // HAS_EXTENDED_TELEMETRY*/
 
 static void frsky_check_telemetry(u8 *pkt, u8 len) {
     // only process packets with the required id and packet length and good crc
@@ -614,24 +614,24 @@ static void frsky_check_telemetry(u8 *pkt, u8 len) {
         if ((pkt[5] >> 4 & 0x0f) == 0x08) {   // restart or somesuch
             seq_last_sent = 8;
             seq_last_rcvd = 0;
-#if HAS_EXTENDED_TELEMETRY
+/*#if HAS_EXTENDED_TELEMETRY
             dataState = STATE_DATA_IDLE;    // reset sport decoder
-#endif
+#endif*/
         } else {
             if ((pkt[5] >> 4 & 0x03) == (seq_last_rcvd + 1) % 4) {
                 seq_last_rcvd = (seq_last_rcvd + 1) % 4;
             }
-#if HAS_EXTENDED_TELEMETRY
+/*#if HAS_EXTENDED_TELEMETRY
             else 
                 dataState = STATE_DATA_IDLE;    // reset sport decoder if sequence number wrong
-#endif
+#endif*/
         }
 
-#if HAS_EXTENDED_TELEMETRY
+/*#if HAS_EXTENDED_TELEMETRY
         if (pkt[6] <= 6)
             for (u8 i=0; i < pkt[6]; i++)
                 frsky_parse_sport_stream(pkt[7+i]);
-#endif
+#endif*/
     }
 }
 
@@ -862,10 +862,10 @@ static void initialize(int bind)
     ctr = 0;
     seq_last_sent = 0;
     seq_last_rcvd = 8;
-#if HAS_EXTENDED_TELEMETRY
+/*#if HAS_EXTENDED_TELEMETRY
     Telemetry.value[TELEM_FRSKY_MIN_CELL] = TELEMETRY_GetMaxValue(TELEM_FRSKY_MIN_CELL);
     UART_SetDataRate(57600);    // set for s.port compatibility
-#endif
+#endif*/
 
     u32 seed = get_tx_id();
     while (!chanskip)
@@ -911,9 +911,9 @@ const void *FRSKYX_Cmds(enum ProtoCmds cmd)
             return (void *)(long) TELEM_FRSKY;
         case PROTOCMD_RESET:
         case PROTOCMD_DEINIT:
-#if HAS_EXTENDED_TELEMETRY
+/*#if HAS_EXTENDED_TELEMETRY
             UART_SetDataRate(0);  // restore data rate to default
-#endif
+#endif*/
             CLOCK_StopTimer();
             return (void *)(CC2500_Reset() ? 1L : -1L);
         default: break;
