@@ -50,7 +50,10 @@
     #define dbgprintf if(0) printf
 #endif
 
-#define PACKET_PERIOD       4525
+// stock Tx has 4525us interval between packets
+// we send at higher rate to mitigate hs6200 having 
+// a hard time to decode packets sent by a nrf24l01
+#define PACKET_PERIOD       1000
 #define INITIAL_WAIT        500
 #define RF_BIND_CHANNEL     0x3c
 #define ADDRESS_LENGTH      5
@@ -241,6 +244,8 @@ static void send_packet(u8 bind)
     // transmission to not bother with timeout after power
     // settings change -  we have plenty of time until next
     // packet.
+    if(tx_power > TXPOWER_10mW)
+        tx_power = TXPOWER_10mW;
     if (tx_power != Model.tx_power) {
         //Keep transmit power updated
         tx_power = Model.tx_power;
@@ -360,6 +365,10 @@ static void initialize()
 {
     CLOCK_StopTimer();
     tx_power = Model.tx_power;
+    // hs6200 has a hard time decoding packets sent by nrf24l01
+    // if Tx power is set above 10mW, limit it 
+    if(tx_power > TXPOWER_10mW)
+        tx_power = TXPOWER_10mW;
     initialize_txid();
     e012_init();
     bind_counter = BIND_COUNT;
