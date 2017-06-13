@@ -15,7 +15,7 @@
 
 #ifdef MODULAR
   //Allows the linker to properly relocate
-  #define Q303_Cmds PROTO_Cmds
+  #define E012_Cmds PROTO_Cmds
   #pragma long_calls
 #endif
 #include "common.h"
