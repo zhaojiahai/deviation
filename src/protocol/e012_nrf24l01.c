@@ -244,12 +244,12 @@ static void send_packet(u8 bind)
     // transmission to not bother with timeout after power
     // settings change -  we have plenty of time until next
     // packet.
-    if(tx_power > TXPOWER_10mW)
-        tx_power = TXPOWER_10mW;
+    if(tx_power > TXPOWER_30mW)
+        tx_power = TXPOWER_30mW;
     if (tx_power != Model.tx_power) {
         //Keep transmit power updated
-        tx_power = Model.tx_power;
         NRF24L01_SetPower(tx_power);
+        Model.tx_power = tx_power;
     }
 }
 
@@ -366,9 +366,11 @@ static void initialize()
     CLOCK_StopTimer();
     tx_power = Model.tx_power;
     // hs6200 has a hard time decoding packets sent by nrf24l01
-    // if Tx power is set above 10mW, limit it 
-    if(tx_power > TXPOWER_10mW)
-        tx_power = TXPOWER_10mW;
+    // if Tx power is set above 30mW, limit it 
+    if(tx_power > TXPOWER_30mW) {
+        tx_power = TXPOWER_30mW;
+        Model.tx_power = TXPOWER_30mW;
+    }
     initialize_txid();
     e012_init();
     bind_counter = BIND_COUNT;
