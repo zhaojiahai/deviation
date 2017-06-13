@@ -244,9 +244,10 @@ static void send_packet(u8 bind)
     // transmission to not bother with timeout after power
     // settings change -  we have plenty of time until next
     // packet.
-    if(tx_power > TXPOWER_30mW)
-        tx_power = TXPOWER_30mW;
     if (tx_power != Model.tx_power) {
+        tx_power = Model.tx_power;
+        if(tx_power > TXPOWER_30mW)
+            tx_power = TXPOWER_30mW;
         //Keep transmit power updated
         NRF24L01_SetPower(tx_power);
         Model.tx_power = tx_power;
