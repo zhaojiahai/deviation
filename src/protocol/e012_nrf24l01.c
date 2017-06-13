@@ -107,13 +107,13 @@ static const u8 hs6200_scramble[] = {
 
 static u16 crc_update(u16 crc, u8 byte, u8 bits)
 {
-  crc = crc ^ (byte << 8);
-  while(bits--)
+    crc = crc ^ (byte << 8);
+    while(bits--)
     if((crc & 0x8000) == 0x8000) 
         crc = (crc << 1) ^ crc_poly;
     else 
         crc = crc << 1;
-  return crc;
+    return crc;
 }
 
 static void HS6200_SetTXAddr(const u8* addr, u8 len)
@@ -132,9 +132,9 @@ static u16 hs6200_calc_crc(u8* msg, u8 len)
     u16 crc = hs6200_crc_init;
     
     // pcf + payload
-	for(pos=0; pos < len-1; pos++) { 
-		crc = crc_update(crc, msg[pos], 8);
-	}
+    for(pos=0; pos < len-1; pos++) { 
+        crc = crc_update(crc, msg[pos], 8);
+    }
     // last byte (1 bit only)
     if(len > 0) {
         crc = crc_update(crc, msg[pos+1], 1);
